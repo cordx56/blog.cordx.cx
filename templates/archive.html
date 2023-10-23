@@ -1,9 +1,10 @@
 {{>templates/header.html}}
 <main>
+    {{{content}}}
     <ul>
         {{#posts}}
         <li>
-            <a href="{{url}}">{{title}}<span class="date"> - {{date}}</span></a>
+            <a href="{{url}}">{{title}}</a><span class="date"> - {{date}}</span>
         </li>
         {{/posts}}
     </ul>

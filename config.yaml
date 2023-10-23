@@ -12,6 +12,12 @@ rules:
       template: post.html
     patterns:
       - posts//*.md
+  - name: archive
+    action:
+      name: build
+      template: archive.html
+    patterns:
+      - archive.md
   - name: pages
     action:
       name: build

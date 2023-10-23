@@ -1,0 +1,51 @@
+body, html {
+    margin: 0;
+}
+
+.site-header a {
+    text-decoration: none;
+}
+.site-header .header-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1em 2em;
+    border-bottom: 1px solid black;
+}
+.site-header .site-title {
+    font-size: 1.4em;
+    font-weight: lighter;
+}
+.site-header nav {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+}
+.site-header nav ul {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    list-style-type: none;
+}
+.site-header nav ul li {
+    margin: 0 0 0 1em;
+}
+
+main {
+    max-width: 800px;
+    margin: 1em auto;
+    padding: 1em;
+}
+
+footer {
+    text-align: center;
+}
+footer p {
+    margin: 0.3em;
+}
+
+a {
+    color: #c00;
+}
