@@ -1,0 +1,25 @@
+site:
+  baseUrl: https://blog.cordx.cx
+  title: Bibliotheca Calculi Machinae
+srcDir: src
+outputDir: dist
+templatesDir: templates
+
+rules:
+  - name: posts
+    action:
+      name: build
+      template: post.html
+    patterns:
+      - posts//*.md
+  - name: pages
+    action:
+      name: build
+      template: base.html
+    patterns:
+      - //*.md
+  - name: assets
+    action:
+      name: copy
+    patterns:
+      - //*
