@@ -1,7 +1,20 @@
-body, html {
+:root {
+    --color: #000;
+    --bg-color: #fff;
+    --dark-color: #ccc;
+    --dark-bg-color: #222;
+}
+
+body {
     margin: 0;
     font-family: sans-serif;
-    font-weight: lighter;
+
+    color: var(--color);
+    background-color: var(--bg-color);
+}
+body.dark {
+    color: var(--dark-color);
+    background-color: var(--dark-bg-color);
 }
 
 .site-header a {
@@ -14,15 +27,30 @@ body, html {
     max-width: 800px;
     margin: 0 auto;
     padding: 1em 2em;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--color);
+}
+.dark .site-header .header-content {
+    border-bottom: 1px solid var(--dark-color);
+}
+.site-header .header-left {
+    display: flex;
+    align-items: center;
+}
+.site-header .header-right {
+    display: flex;
+    align-items: center;
 }
 .site-header .site-title {
     font-size: 1.4em;
     font-weight: lighter;
 }
+.site-header .site-title a {
+    color: var(--color);
+}
+.dark .site-header .site-title a {
+    color: var(--dark-color);
+}
 .site-header nav {
-    display: flex;
-    align-items: center;
     font-size: 1.2em;
 }
 .site-header nav ul {

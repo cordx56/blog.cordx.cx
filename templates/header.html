@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="author" content="{{siteAuthor}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/js/main.js"></script>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="icon" href="/favicon.png" sizes="64x64">
     <link rel="icon" href="/favicon-large.png" sizes="192x192">
@@ -13,18 +14,19 @@
 <body>
     <header class="site-header">
         <div class="header-content">
-            <div class="site-title">
-                {{siteTitle}}
+            <div class="header-left">
+                <a class="site-title" href="/">
+                    {{siteTitle}}
+                </a>
             </div>
-            <nav>
-                <ul>
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-                    <li>
-                        <a href="/archive.html">Archive</a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="header-right">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="https://github.com/cordx56/blog.cordx.cx">Repo</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </header>
