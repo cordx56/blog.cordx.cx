@@ -1,19 +1,20 @@
 ---
 title: 最初の投稿
 date: 2023-10-24 05:49
+tags: [haskell]
 ---
 
 こんにちは。
 
 今まではてなブログさんで全ての記事を書いていたのですが、最近はObsidianを利用してMarkdownで様々な文章を残していること、記事をGitで管理したいなどがあり、今回から技術系のブログはこちらで書くことにしました。
-リポジトリは[cordx56/blog.cordx.cx](https://github.com/cordx56/blog.cordx.cx)になります。
+リポジトリは [cordx56/blog.cordx.cx](https://github.com/cordx56/blog.cordx.cx) になります。
 
 どうぞよろしくお願いします。
 
 ## このサイトについて
 さて、折角なのでこのサイトについて、どのように作られているかなど少し説明したいと思います。
 
-本サイトは、Haskell製の静的サイトジェネレータである[ChrisPenner/slick](https://github.com/ChrisPenner/slick)を利用して作られています。
+本サイトは、Haskell製の静的サイトジェネレータである [ChrisPenner/slick](https://github.com/ChrisPenner/slick) を利用して作られています。
 
 何故これを利用したかというと、過去に私がHaskell製の静的サイトジェネレータのHakyllを利用していたので、再びHakyllでサイトを作成しようかと思ったところ、HakyllからSlickに移行した人のブログ記事が出てきたからです。
 Ref: [ここを Hakyll から Slick に移行してみた](https://matsubara0507.github.io/posts/2021-06-13-my-site-use-slick.html)
@@ -24,12 +25,12 @@ Hakyllは全部入りの印象が強く、カスタマイズしてみた感触�
 ### どのような仕組みになっているか
 折角なので、どのような仕組みになっているかも説明したいと思います。
 
-まず、サイトビルダのソースコードは[cordx56/slick-site-builder](https://github.com/cordx56/slick-site-builder)にあります。
+まず、サイトビルダのソースコードは [cordx56/slick-site-builder](https://github.com/cordx56/slick-site-builder) にあります。
 これはサイトの中身を含んでおらず、純粋にサイトをビルドするだけのプログラムです。
 
 このプログラムが何をしているかというと、まずカレントディレクトリの `config.yaml` を読みます。
 そして、そこに記述されたサイト情報、ビルドルールを読み取り、それに従ってサイトをビルドしていきます。
-実際にどのような記述でこのサイトがビルドされているかは、[こちら](https://github.com/cordx56/blog.cordx.cx/blob/main/config.yaml)から確認できます。
+実際にどのような記述でこのサイトがビルドされているかは、 [こちら](https://github.com/cordx56/blog.cordx.cx/blob/main/config.yaml) から確認できます。
 
 サイトビルダのリポジトリはGitHub Actionsで自動でDockerイメージとしてビルドされ、ghcr.ioでホストされます。
 このイメージを利用して、ブログのリポジトリにpushされた際に、自動でサイトのビルドが走るようになっています。
