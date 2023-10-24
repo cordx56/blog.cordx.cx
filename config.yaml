@@ -1,6 +1,6 @@
 site:
   baseUrl: https://blog.cordx.cx
-  title: Bibliotheca Calculi Machinae
+  title: Bibliotheca ex Machina
 srcDir: src
 outputDir: dist
 templatesDir: templates
