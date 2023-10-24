@@ -44,10 +44,10 @@ body.dark {
     font-size: 1.4em;
     font-weight: lighter;
 }
-.site-header .site-title a {
+.site-header .site-title {
     color: var(--color);
 }
-.dark .site-header .site-title a {
+.dark .site-header .site-title {
     color: var(--dark-color);
 }
 .site-header nav {
@@ -78,7 +78,7 @@ footer p {
 }
 
 a {
-    color: #c00;
+    color: #c22;
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: sans-serif;
