@@ -10,6 +10,9 @@ rules:
     action:
       name: build
       template: post.html
+      sort:
+        by: date
+        order: desc
     patterns:
       - posts//*.md
   - name: index
