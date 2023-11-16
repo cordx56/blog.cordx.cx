@@ -8,13 +8,32 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/cordx56/slick-site-builder:main
-      volumes:
-        - ./:/app
     steps:
       - uses: actions/checkout@v4
-      - run: /build-site
+
+      - id: setup
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: 9.4
+          cabal-update: true
+      - id: cache
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: cabal-${{ hashFiles('**/*.cabal') }}
+
+      - run: cabal install --only-dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+
+      - uses: actions/cache/save@v3
+        if: steps.cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ steps.cache.outputs.cache-primary-key }}
+
+      - run: cabal install --overwrite-policy=always
+      - run: site build
+
       - uses: actions/upload-pages-artifact@v2
         with:
           path: dist
