@@ -3,6 +3,8 @@
 
 import Data.Monoid (mappend)
 import Hakyll
+import Image
+import System.FilePath.Posix ((-<.>))
 
 --------------------------------------------------------------------------------
 conf :: Configuration
@@ -13,25 +15,42 @@ conf =
     , previewHost = "0.0.0.0"
     , previewPort = 8080
     }
+baseUrl :: String
+baseUrl = "https://blog.cordx.cx"
+siteTitle :: String
+siteTitle = "Bibliotheca ex Machina"
 
 --------------------------------------------------------------------------------
 postsPattern :: Pattern
 postsPattern = "posts/**"
 
 defCtx :: Context String
-defCtx = constField "siteTitle" "Bibliotheca ex Machina" `mappend` defaultContext
+defCtx =
+  constField "siteTitle" siteTitle
+    `mappend` constField "baseUrl" baseUrl
+    `mappend` defaultContext
 
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyllWith conf $ do
   tags <- buildTags postsPattern (fromCapture "tags/*.html")
+
   match postsPattern $ do
-    let ctx = postCtx tags
     route $ setExtension "html"
-    compile
-      $ pandocCompiler
-      >>= loadAndApplyTemplate "templates/post.html" ctx
-      >>= loadAndApplyTemplate "templates/base.html" ctx
+    compile $ do
+      route <- getRoute =<< getUnderlying
+      let url = fmap toUrl route
+          baseCtx = postCtx tags
+          ctx = case url of
+            Just url -> constField "image" (url -<.> "png") `mappend` baseCtx
+            Nothing -> baseCtx
+      pandocCompiler
+        >>= loadAndApplyTemplate "templates/post.html" ctx
+        >>= loadAndApplyTemplate "templates/base.html" ctx
+
+  match postsPattern $ version "ogpImage" $ do
+    route $ setExtension "png"
+    compile ogpImageCompiler
 
   tagsRules tags $ \tag pattern -> do
     let title = "Tag: " ++ tag
@@ -50,7 +69,7 @@ main = hakyllWith conf $ do
   create ["archive.html"] $ do
     route idRoute
     compile $ do
-      posts <- recentFirst =<< loadAll postsPattern
+      posts <- recentFirst =<< loadAll (postsPattern .&&. hasNoVersion)
       let ctx = postCtx tags
           archiveCtx = listField "posts" ctx (return posts) `mappend` defCtx
 
@@ -62,7 +81,7 @@ main = hakyllWith conf $ do
   create ["index.html"] $ do
     route idRoute
     compile $ do
-      posts <- recentFirst =<< loadAll postsPattern
+      posts <- recentFirst =<< loadAll (postsPattern .&&. hasNoVersion)
       let ctx = postCtx tags
           recentPosts = take 5 posts
           indexCtx =
@@ -92,3 +111,15 @@ postCtx tags = tagsField "tags" tags `mappend` defCtx
 
 -- dateField "date" "%B %e, %Y"
 --  `mappend` defaultContext
+
+--------------------------------------------------------------------------------
+generateOgpImage fp = generate fp siteTitle
+ogpImageCompiler = do
+  underlying <- getUnderlying
+  mTitle <- getMetadataField underlying "title"
+  case mTitle of
+    Just title -> do
+      TmpFile tmp <- newTmpFile ".png"
+      unsafeCompiler $ do
+        generateOgpImage tmp title
+      makeItem $ CopyFile tmp
