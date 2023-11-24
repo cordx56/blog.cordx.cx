@@ -19,9 +19,10 @@ margin = 20
 textHeight = 128
 
 removeHyphen :: String -> String
-removeHyphen (_ : "-") = []
-removeHyphen [] = []
-removeHyphen (x : xs) = x : removeHyphen xs
+removeHyphen "" = ""
+removeHyphen s = case last s of
+  '-' -> init s
+  _ -> s
 
 pageTitleStylize text = text # fc whiteColor # lw none
 siteTitleStylize text = text # fc redColor # lw none
