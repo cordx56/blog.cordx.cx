@@ -13,6 +13,10 @@
     <meta property="og:url" content="$baseUrl$$url$">
     $if(image)$
     <meta property="og:image" content="$baseUrl$$image$">
+    <meta name="twitter:card" content="summary_large_image">
+    $else$
+    <meta property="og:image" content="$baseUrl$/favicon-large.png">
+    <meta name="twitter:card" content="summary">
     $endif$
     <title>$title$ - $siteTitle$</title>
 </head>

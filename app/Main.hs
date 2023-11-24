@@ -63,7 +63,7 @@ main = hakyllWith conf $ do
               `mappend` defCtx
       makeItem ""
         >>= loadAndApplyTemplate "templates/post-list.html" ctx
-        >>= loadAndApplyTemplate "templates/post.html" ctx
+        >>= loadAndApplyTemplate "templates/common.html" ctx
         >>= loadAndApplyTemplate "templates/base.html" ctx
 
   create ["archive.html"] $ do
@@ -75,7 +75,6 @@ main = hakyllWith conf $ do
 
       getResourceBody
         >>= applyAsTemplate archiveCtx
-        -- >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
         >>= loadAndApplyTemplate "templates/base.html" archiveCtx
 
   create ["index.html"] $ do
