@@ -57,9 +57,9 @@ drawText font x y size color text = do
   heightSum = sum (map height boundingBoxes) + lineMarginSum
   offsetSumY = heightSum / 2
 
-  draw currentHeight (t : ts) =
+  draw currentHeight (t : ts) = do
     drawTextRawPoint font (x - offsetX boundingBox) (y - offsetSumY + currentHeight + offsetY boundingBox) pointSize color t
-      >> draw (currentHeight + height boundingBox + lineMargin) ts
+    draw (currentHeight + height boundingBox + lineMargin) ts
    where
     boundingBox = getBoundingBox t
   draw _ [] = return ()
