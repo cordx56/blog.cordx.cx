@@ -18,7 +18,7 @@ conf =
 baseUrl :: String
 baseUrl = "https://blog.cordx.cx"
 siteTitle :: String
-siteTitle = "Bibliotheca ex Machina"
+siteTitle = "Arc<hive>"
 
 --------------------------------------------------------------------------------
 postsPattern :: Pattern
@@ -26,7 +26,7 @@ postsPattern = "posts/**"
 
 defCtx :: Context String
 defCtx =
-  constField "siteTitle" siteTitle
+  constField "siteTitle" (escapeHtml siteTitle)
     `mappend` constField "baseUrl" baseUrl
     `mappend` defaultContext
 
