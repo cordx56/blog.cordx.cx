@@ -112,7 +112,7 @@ postCtx tags = tagsField "tags" tags `mappend` defCtx
 --  `mappend` defaultContext
 
 --------------------------------------------------------------------------------
-generateOgpImage fp = generate fp siteTitle
+generateOgpImage = generate "fonts/NotoSansJP-Light.ttf" siteTitle
 ogpImageCompiler = do
   underlying <- getUnderlying
   mTitle <- getMetadataField underlying "title"
@@ -120,5 +120,5 @@ ogpImageCompiler = do
     Just title -> do
       TmpFile tmp <- newTmpFile ".png"
       unsafeCompiler $ do
-        generateOgpImage tmp title
+        generateOgpImage title tmp
       makeItem $ CopyFile tmp
