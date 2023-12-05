@@ -53,7 +53,9 @@ body.dark {
 .site-header nav ul {
     display: flex;
     flex-direction: row;
+    align-items: center;
     margin: 0;
+    padding: 0;
     list-style-type: none;
 }
 .site-header nav ul li {
@@ -66,6 +68,12 @@ body.dark {
     color: var(--color);
 }
 .site-header .theme-toggle-icon {
+    height: var(--font-size);
+}
+.site-header .site-favicon {
+    display: flex;
+}
+.site-header .site-favicon img {
     height: var(--font-size);
 }
 
@@ -91,6 +99,9 @@ a {
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: sans-serif;
+}
+img {
+    max-width: 100%;
 }
 pre {
     overflow-x: auto;
