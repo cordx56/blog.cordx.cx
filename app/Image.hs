@@ -1,6 +1,6 @@
 module Image where
 
-import Codec.Picture (PixelRGBA8 (..), writePng)
+import Codec.Picture (PixelRGBA8 (..), writePng, readPng, convertRGBA8)
 import Graphics.Rasterific
 import Graphics.Rasterific.Texture
 import Graphics.Text.TrueType
@@ -65,13 +65,17 @@ drawText font x y size color text = do
   draw _ [] = return ()
 
 -- Draw titles
-draw font siteTitle pageTitle =
+draw font bg siteTitle pageTitle =
   renderDrawingAtDpi (round imageWidth) (round imageHeight) dpi blackColor $ do
+    drawImageAtSize bg 0 (V2 0 0) imageWidth imageHeight
     drawText font (imageWidth / 2) (imageHeight / 2 - textHeight / 2) textHeight whiteColor pageTitle
-    drawText font (imageWidth / 2) (imageHeight - margin - textHeight) textHeight redColor siteTitle
 
 generate fontFp siteTitle pageTitle fp = do
   fontErr <- loadFontFile fontFp
   case fontErr of
     Left err -> error err
-    Right font -> writePng fp $ draw font siteTitle pageTitle
+    Right font -> do
+     bgErr <- readPng "ogp.png"
+     case bgErr of
+      Left err -> error err
+      Right bg -> writePng fp $ draw font (convertRGBA8 bg) siteTitle pageTitle
