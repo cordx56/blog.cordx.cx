@@ -10,13 +10,15 @@ import System.FilePath.Posix ((-<.>))
 conf :: Configuration
 conf =
   defaultConfiguration
-    { providerDirectory = "src"
-    , destinationDirectory = "dist"
-    , previewHost = "0.0.0.0"
-    , previewPort = 8080
+    { providerDirectory = "src",
+      destinationDirectory = "dist",
+      previewHost = "0.0.0.0",
+      previewPort = 8080
     }
+
 baseUrl :: String
 baseUrl = "https://blog.cordx.cx"
+
 siteTitle :: String
 siteTitle = "Arc<hive>"
 
@@ -94,9 +96,9 @@ main = hakyllWith conf $ do
 
   match "**.md" $ do
     route $ setExtension "html"
-    compile
-      $ pandocCompiler
-      >>= loadAndApplyTemplate "templates/base.html" defCtx
+    compile $
+      pandocCompiler
+        >>= loadAndApplyTemplate "templates/base.html" defCtx
 
   match "templates/*" $ compile templateBodyCompiler
 
@@ -113,6 +115,7 @@ postCtx tags = tagsField "tags" tags `mappend` defCtx
 
 --------------------------------------------------------------------------------
 generateOgpImage = generate "fonts/NotoSansJP-Light.ttf" siteTitle
+
 ogpImageCompiler = do
   underlying <- getUnderlying
   mTitle <- getMetadataField underlying "title"
