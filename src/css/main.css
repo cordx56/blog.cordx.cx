@@ -1,6 +1,7 @@
 body {
     --color: #000;
     --bg-color: #fff;
+    --accent-color: #c22;
 
     margin: 0;
     font-family: sans-serif;
@@ -95,9 +96,10 @@ footer p {
 }
 
 a {
-    color: #c22;
+    color: var(--accent-color);
 }
 h1, h2, h3, h4, h5, h6 {
+    border-bottom: 1px solid var(--accent-color);
     font-family: sans-serif;
     font-weight: lighter;
 }
