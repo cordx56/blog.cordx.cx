@@ -1,8 +1,12 @@
+mod ogp;
+
+use ogp::OgpImage;
 use polysite::{
     compiler::{
-        file::{CopyCompiler, FileReader, FileWriter},
+        file::{CopyCompiler, FileWriter},
         markdown::MarkdownCompiler,
         metadata::SetMetadata,
+        path::SetExtension,
         template::{TemplateEngine, TemplateRenderer},
     },
     *,
@@ -10,6 +14,7 @@ use polysite::{
 
 #[tokio::main]
 async fn main() {
+    simple_logger::SimpleLogger::new().env().init().unwrap();
     let template_engine = TemplateEngine::new("templates/**").unwrap().get();
     Builder::new(Config::default())
         .add_step(
@@ -36,6 +41,17 @@ async fn main() {
                 .set_compiler(
                     pipe!(
                         TemplateRenderer::new(template_engine.clone(), "archive.html"),
+                        FileWriter::new()
+                    )
+                    .get(),
+                ),
+            Rule::new("ogp")
+                .set_globs(["posts/**/*.md"])
+                .set_version(Version::from("ogp"))
+                .set_compiler(
+                    pipe!(
+                        SetExtension::new("png"),
+                        OgpImage::new(Version::default(), "ogp.png", "fonts/NotoSansJP-Light.ttf"),
                         FileWriter::new()
                     )
                     .get(),
