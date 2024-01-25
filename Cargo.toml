@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 tokio = "1"
-polysite = { path = "../polysite" }
+polysite = "0.0.1"
 imageproc = "0.23.0"
 rusttype = "0.9.3"
 anyhow = "1.0.79"

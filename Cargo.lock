@@ -981,7 +981,9 @@ dependencies = [
 
 [[package]]
 name = "polysite"
-version = "0.1.0"
+version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "acfcabdae314cb085d58fa6829a6817cd54b1b6ed56cb0d899517a65856597a3"
 dependencies = [
  "anyhow",
  "fronma",
