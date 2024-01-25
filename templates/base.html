@@ -11,21 +11,21 @@
     <meta property="og:title" content="$title$ - $siteTitle$">
     <meta property="og:type" content="article">
     <meta property="og:url" content="$baseUrl$$url$">
-    $if(image)$
+    {% if image %}
     <meta property="og:image" content="$baseUrl$$image$">
     <meta name="twitter:card" content="summary_large_image">
-    $else$
+    {% else %}
     <meta property="og:image" content="$baseUrl$/favicon-large.png">
     <meta name="twitter:card" content="summary">
-    $endif$
-    <title>$title$ - $siteTitle$</title>
+    {% endif %}
+    <title>{% if title %}{{ title }} - {% endif %}{{ site_title }}</title>
 </head>
 <body>
     <header class="site-header">
         <div class="header-content">
             <div class="header-left">
                 <a class="site-title" href="/">
-                    $siteTitle$
+                    {{ site_title }}
                 </a>
             </div>
             <div class="header-right">
@@ -46,12 +46,13 @@
     </header>
 
     <main>
-        $body$
+        {% block body %}
+        {% endblock body %}
     </main>
 
     <footer>
         <p>
-            Built with Haskell using <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+            Built with Rust using <a href="https://polysite">polysite</a>
         </p>
         <p>
             <a href="/license.html">About License</a>

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>{{ title }}</h1>
+
+<section class="body">
+    {{ _body | safe }}
+</section>
+{% endblock body %}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Archive</h1>
+<p>過去の投稿一覧</p>
+{% set posts = posts | sort(attribute="date") | reverse %}
+{% include "post-list.html" %}
+{% endblock body %}
