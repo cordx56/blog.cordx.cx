@@ -1,10 +1,9 @@
 use anyhow::{anyhow, Context as _};
 use image::{ImageOutputFormat, Rgba};
 use imageproc::drawing::draw_text;
-use polysite::{builder::metadata::BODY_META, *};
+use polysite::*;
 use rusttype::{Font, Scale};
 use std::fs::read;
-use std::io::Cursor;
 
 pub struct OgpImage {
     version: Version,
@@ -27,7 +26,7 @@ impl OgpImage {
     }
 }
 impl Compiler for OgpImage {
-    fn compile(&self, mut ctx: Context) -> CompilerReturn {
+    fn compile(&self, ctx: Context) -> CompilerReturn {
         let ver = self.version.clone();
         let img_path = self.img_path.clone();
         let font_path = self.font_path.clone();
@@ -55,14 +54,10 @@ impl Compiler for OgpImage {
                 &font,
                 &title,
             );
-            let mut c = Cursor::new(Vec::new());
+            let mut target = ctx.open_target()?;
             new_img
-                .write_to(&mut c, ImageOutputFormat::Png)
+                .write_to(&mut target, ImageOutputFormat::Png)
                 .context("Image output failed")?;
-            ctx.insert_compiling_raw_metadata(
-                BODY_META,
-                Metadata::from_bytes(c.get_ref().to_vec()),
-            )?;
             Ok(ctx)
         })
     }

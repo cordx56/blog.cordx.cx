@@ -52,7 +52,6 @@ async fn main() {
                     pipe!(
                         SetExtension::new("png"),
                         OgpImage::new(Version::default(), "ogp.png", "fonts/NotoSansJP-Light.ttf"),
-                        FileWriter::new()
                     )
                     .get(),
                 ),
