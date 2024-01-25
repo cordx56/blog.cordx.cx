@@ -36,7 +36,7 @@ body.dark {
     align-items: center;
 }
 .site-header .header-right {
-    --font-size: 1.2em;
+    --font-size: 1.4em;
 
     display: flex;
     align-items: center;
