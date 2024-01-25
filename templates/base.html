@@ -10,12 +10,12 @@
     <link rel="apple-touch-icon" href="/favicon-large.png">
     <meta property="og:title" content="{% if title %}{{ title }} - {% endif %}{{ site_title }}">
     <meta property="og:type" content="article">
-    <meta property="og:url" content="{{ base_url }}{{ _path }}">
+    <meta property="og:url" content="{{ base_url | safe }}{{ _path | safe }}">
     {% if image %}
-    <meta property="og:image" content="{{ base_url }}{{ image }}">
+    <meta property="og:image" content="{{ base_url | safe }}{{ image | safe }}">
     <meta name="twitter:card" content="summary_large_image">
     {% else %}
-    <meta property="og:image" content="{{ base_url }}/favicon-large.png">
+    <meta property="og:image" content="{{ base_url | safe }}/favicon-large.png">
     <meta name="twitter:card" content="summary">
     {% endif %}
     <title>{% if title %}{{ title }} - {% endif %}{{ site_title }}</title>
