@@ -8,6 +8,7 @@ use polysite::{
         metadata::SetMetadata,
         path::SetExtension,
         template::{TemplateEngine, TemplateRenderer},
+        utils::GenericCompiler,
     },
     *,
 };
@@ -22,12 +23,25 @@ async fn main() {
                 SetMetadata::new()
                     .global("site_title", "Arc<hive>")
                     .unwrap()
+                    .global("base_url", "https://blog.cordx.cx")
+                    .unwrap()
                     .get(),
             )],
         )
         .add_step([Rule::new("posts")
             .set_globs(["posts/**/*.md"])
-            .set_compiler(MarkdownCompiler::new(template_engine.clone(), "post.html", None).get())])
+            .set_compiler(
+                pipe!(
+                    GenericCompiler::from(|mut ctx| compile!({
+                        let mut path = ctx.path()?;
+                        path.set_extension("png");
+                        ctx.insert_compiling_metadata("image", path)?;
+                        Ok(ctx)
+                    })),
+                    MarkdownCompiler::new(template_engine.clone(), "post.html", None),
+                )
+                .get(),
+            )])
         .add_step([
             Rule::new("index").set_create(["index.html"]).set_compiler(
                 pipe!(
@@ -45,9 +59,9 @@ async fn main() {
                     )
                     .get(),
                 ),
-            Rule::new("ogp")
+            Rule::new("ogp_image")
                 .set_globs(["posts/**/*.md"])
-                .set_version(Version::from("ogp"))
+                .set_version(Version::from("ogp_image"))
                 .set_compiler(
                     pipe!(
                         SetExtension::new("png"),

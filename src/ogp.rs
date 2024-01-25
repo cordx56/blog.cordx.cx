@@ -38,7 +38,7 @@ impl Compiler for OgpImage {
             let width = img.width();
             let max_width = width - 120;
             let height = img.height();
-            let text_height = 72;
+            let text_height = 84;
 
             // Get title
             let meta = ctx

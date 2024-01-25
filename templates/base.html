@@ -8,14 +8,14 @@
     <link rel="icon" href="/favicon.png" sizes="64x64">
     <link rel="icon" href="/favicon-large.png" sizes="192x192">
     <link rel="apple-touch-icon" href="/favicon-large.png">
-    <meta property="og:title" content="$title$ - $siteTitle$">
+    <meta property="og:title" content="{% if title %}{{ title }} - {% endif %}{{ site_title }}">
     <meta property="og:type" content="article">
-    <meta property="og:url" content="$baseUrl$$url$">
+    <meta property="og:url" content="{{ base_url }}{{ _path }}">
     {% if image %}
-    <meta property="og:image" content="$baseUrl$$image$">
+    <meta property="og:image" content="{{ base_url }}{{ image }}">
     <meta name="twitter:card" content="summary_large_image">
     {% else %}
-    <meta property="og:image" content="$baseUrl$/favicon-large.png">
+    <meta property="og:image" content="{{ base_url }}/favicon-large.png">
     <meta name="twitter:card" content="summary">
     {% endif %}
     <title>{% if title %}{{ title }} - {% endif %}{{ site_title }}</title>
