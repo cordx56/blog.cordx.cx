@@ -16,7 +16,7 @@ OGP画像の生成ということであれば当然文字の描画は避けて�
 今回は [SVGFonts](https://hackage.haskell.org/package/SVGFonts) というライブラリを利用して文字を描画することにしました。
 SVGFontsは [diagrams](https://hackage.haskell.org/package/diagrams) というライブラリの上で動くようなので、こちらについても確認する必要があります。
 
-実際に文字や図形の描画を行うコードは [app/Image.hs](https://github.com/cordx56/blog.cordx.cx/blob/main/app/Image.hs) にあります。
+実際に文字や図形の描画を行うコードは [app/Image.hs](https://github.com/cordx56/blog.cordx.cx/blob/2f6e5115a01ecff1e0009dc493eb87cffa4a0ead/app/Image.hs) にあります。
 基本的にはSVGFontsのドキュメント通りです。
 
 SVGフォントはNoto Sansを元にFontForgeで作成しました。
@@ -32,7 +32,7 @@ fontforge -lang ff -c 'Open($1); Generate($2)' ~/Downloads/Noto_Sans_JP/static/N
 
 ## Hakyllと組み合わせる
 ここまでで画像の生成ができるようになったので、ここからはHakyllとの組み合わせの話をします。
-実際のコードは [app/Main.hs](https://github.com/cordx56/blog.cordx.cx/blob/main/app/Main.hs) にあります。
+実際のコードは [app/Main.hs](https://github.com/cordx56/blog.cordx.cx/blob/2f6e5115a01ecff1e0009dc493eb87cffa4a0ead/app/Main.hs) にあります。
 
 重要なポイントは
 
@@ -52,6 +52,6 @@ fontforge -lang ff -c 'Open($1); Generate($2)' ~/Downloads/Noto_Sans_JP/static/N
 色々躓きポイントが多かったです。
 例えばdiagramsがPNG画像の生成にcairoを使っているのですが、cabalの依存関係解決の時にこの辺のライブラリがないと落ちるので、最初のうちはcabalの問題かと勘違いして時間を浪費してしまいました。
 
-GitHub Actionsでビルドする例は [.github/workflows/deploy.yaml](https://github.com/cordx56/blog.cordx.cx/blob/main/.github/workflows/deploy.yaml) にあるので、これも記載しておきます。
+GitHub Actionsでビルドする例は [.github/workflows/deploy.yaml](https://github.com/cordx56/blog.cordx.cx/blob/2f6e5115a01ecff1e0009dc493eb87cffa4a0ead/.github/workflows/deploy.yaml) にあるので、これも記載しておきます。
 
 以上、HakyllでOGP画像を生成する話でした。
