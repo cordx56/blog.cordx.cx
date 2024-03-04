@@ -43,13 +43,14 @@ impl Compiler for OgpImage {
             // Get title
             let meta = ctx
                 .get_version_metadata(ver, &src)
-                .await
                 .ok_or(anyhow!("Compiled version of source was not found"))?;
             let title = meta
                 .get("title")
                 .ok_or(anyhow!("Title is not set"))?
                 .as_str()
                 .ok_or(anyhow!("Title is not string"))?
+                .lock()
+                .unwrap()
                 .to_string();
 
             // Calculate

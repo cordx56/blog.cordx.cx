@@ -5,7 +5,6 @@ use polysite::{
     compiler::{
         file::{CopyCompiler, FileWriter},
         markdown::MarkdownCompiler,
-        metadata::SetMetadata,
         path::SetExtension,
         template::{TemplateEngine, TemplateRenderer},
         utils::GenericCompiler,
@@ -18,16 +17,8 @@ async fn main() {
     simple_logger::SimpleLogger::new().env().init().unwrap();
     let template_engine = TemplateEngine::new("templates/**").unwrap().get();
     Builder::new(Config::default())
-        .add_step(
-            [Rule::new("metadata").set_create(["metadata"]).set_compiler(
-                SetMetadata::new()
-                    .global("site_title", "Arc<hive>")
-                    .unwrap()
-                    .global("base_url", "https://blog.cordx.cx")
-                    .unwrap()
-                    .get(),
-            )],
-        )
+        .insert_metadata("site_title", Metadata::from("Arc<hive>"))
+        .insert_metadata("base_url", Metadata::from("https://blog.cordx.cx"))
         .add_step([Rule::new("posts")
             .set_globs(["posts/**/*.md"])
             .set_compiler(
@@ -35,7 +26,7 @@ async fn main() {
                     GenericCompiler::from(|mut ctx| compile!({
                         let mut path = ctx.path()?;
                         path.set_extension("png");
-                        ctx.insert_compiling_metadata("image", path)?;
+                        ctx.insert_compiling_metadata("image", Metadata::from_ser(path).unwrap());
                         Ok(ctx)
                     })),
                     MarkdownCompiler::new(template_engine.clone(), "post.html", None),
