@@ -87,6 +87,7 @@ fn font_wrap(font: &Font<'_>, scale: Scale, text: String, max_width: i32) -> Vec
         last.push(c);
         let glyphs: Vec<_> = font
             .layout(last, scale, point(0.0, 0.0))
+            .filter(|g| g.pixel_bounding_box().is_some())
             .map(|g| g.pixel_bounding_box().unwrap())
             .collect();
         let left = glyphs.first().unwrap().min.x;
@@ -111,6 +112,7 @@ fn draw_position(
     for line in texts {
         let glyphs: Vec<_> = font
             .layout(&line, scale, point(0.0, 0.0))
+            .filter(|g| g.pixel_bounding_box().is_some())
             .map(|g| g.pixel_bounding_box().unwrap())
             .collect();
         let left = glyphs.first().unwrap().min.x;
