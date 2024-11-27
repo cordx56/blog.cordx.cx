@@ -4,5 +4,5 @@ dist*
 /target
 dist/
 
-/.obsidian
+.obsidian
 draft
