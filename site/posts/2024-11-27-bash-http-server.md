@@ -38,10 +38,10 @@ Pythonとか使いません。
 
 ```bash
 dl() {
-        echo "http://localhost:${ssh_dl_port}/"
-        while true
-        do
-                cat << EOF | nc -l "$ssh_dl_port" > /dev/null
+    echo "http://localhost:${ssh_dl_port}/"
+    while true
+    do
+        cat << EOF | nc -l "$ssh_dl_port" > /dev/null
 HTTP/1.1 200 Ok
 Content-Type: application/octet-stream
 Content-Disposition: attachment; filename="$(basename "$1")"
@@ -49,7 +49,7 @@ Content-Length: $(wc -c "$1" | awk '{ print $1 }')
 
 $(cat "$1")
 EOF
-        done
+    done
 }
 ```
 
