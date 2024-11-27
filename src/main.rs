@@ -8,77 +8,82 @@ use polysite::{
         metadata::SetMetadata,
         path::SetExtension,
         template::{TemplateEngine, TemplateRenderer},
-        utils::GenericCompiler,
     },
     *,
 };
+use tracing_subscriber::prelude::*;
 
 #[tokio::main]
 async fn main() {
+    let subscriber =
+        tracing_subscriber::Registry::default().with(tracing_error::ErrorLayer::default());
+    tracing::subscriber::set_global_default(subscriber).unwrap();
     simple_logger::SimpleLogger::new().env().init().unwrap();
-    let template_engine = TemplateEngine::new("templates/**").unwrap().get();
-    Builder::new(Config::default())
-        .add_step(
-            [Rule::new("metadata").set_create(["metadata"]).set_compiler(
-                SetMetadata::new()
-                    .global("site_title", "Arc<hive>")
-                    .unwrap()
-                    .global("base_url", "https://blog.cordx.cx")
-                    .unwrap()
-                    .get(),
-            )],
+
+    let template_engine = TemplateEngine::new("templates/**").unwrap();
+    if let Err(err) = Builder::new(Config::default())
+        .add_step([Rule::new(
+            "metadata",
+            SetMetadata::new()
+                .global("site_title", "Arc<hive>")
+                .unwrap()
+                .global("base_url", "https://blog.cordx.cx")
+                .unwrap(),
         )
-        .add_step([Rule::new("posts")
-            .set_globs(["posts/**/*.md"])
-            .set_compiler(
-                pipe!(
-                    GenericCompiler::from(|mut ctx| compile!({
-                        let mut path = ctx.path()?;
-                        path.set_extension("png");
-                        ctx.insert_compiling_metadata("image", path)?;
-                        Ok(ctx)
-                    })),
-                    MarkdownCompiler::new(template_engine.clone(), "post.html", None),
-                )
-                .get(),
-            )])
+        .set_create(["metadata"])])
+        .add_step([Rule::new(
+            "posts",
+            pipe!(
+                |mut ctx: Context| compile!({
+                    let mut path = ctx.path().await.unwrap();
+                    path.set_extension("png");
+                    ctx.metadata_mut()
+                        .insert_local("image".to_owned(), Metadata::to_value(path)?);
+                    Ok(CompileStep::Completed(ctx))
+                }),
+                MarkdownCompiler::new(template_engine.clone(), "post.html", None),
+            ),
+        )
+        .set_globs(["posts/**/*.md"])])
         .add_step([
-            Rule::new("index").set_create(["index.html"]).set_compiler(
+            Rule::new(
+                "index",
                 pipe!(
                     TemplateRenderer::new(template_engine.clone(), "index.html"),
                     FileWriter::new()
-                )
-                .get(),
-            ),
-            Rule::new("archive")
-                .set_create(["archive.html"])
-                .set_compiler(
-                    pipe!(
-                        TemplateRenderer::new(template_engine.clone(), "archive.html"),
-                        FileWriter::new()
-                    )
-                    .get(),
                 ),
-            Rule::new("ogp_image")
-                .set_globs(["posts/**/*.md"])
-                .set_version(Version::from("ogp_image"))
-                .set_compiler(
-                    pipe!(
-                        SetExtension::new("png"),
-                        OgpImage::new(Version::default(), "ogp.png", "fonts/NotoSansJP-Light.ttf"),
-                    )
-                    .get(),
+            )
+            .set_create(["index.html"]),
+            Rule::new(
+                "archive",
+                pipe!(
+                    TemplateRenderer::new(template_engine.clone(), "archive.html"),
+                    FileWriter::new()
                 ),
+            )
+            .set_create(["archive.html"]),
+            Rule::new(
+                "ogp_image",
+                pipe!(
+                    SetExtension::new("png"),
+                    OgpImage::new(Version::default(), "ogp.png", "fonts/NotoSansJP-Light.ttf")
+                        .await,
+                ),
+            )
+            .set_globs(["posts/**/*.md"])
+            .set_version(Version::from("ogp_image")),
         ])
         .add_step([
-            Rule::new("others").set_globs(["**/*.md"]).set_compiler(
-                MarkdownCompiler::new(template_engine.clone(), "common.html", None).get(),
-            ),
-            Rule::new("files")
-                .set_globs(["**/*"])
-                .set_compiler(CopyCompiler::new().get()),
+            Rule::new(
+                "others",
+                MarkdownCompiler::new(template_engine.clone(), "common.html", None),
+            )
+            .set_globs(["**/*.md"]),
+            Rule::new("files", CopyCompiler::new()).set_globs(["**/*"]),
         ])
         .build()
         .await
-        .unwrap();
+    {
+        log::error!("{}", err);
+    }
 }

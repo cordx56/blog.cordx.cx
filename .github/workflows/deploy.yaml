@@ -17,7 +17,7 @@ jobs:
           rustup install stable
 
       - name: Build
-        run: cargo run
+        run: cargo run --locked
 
       - uses: actions/upload-pages-artifact@v2
         with:
