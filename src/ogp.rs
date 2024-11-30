@@ -57,9 +57,9 @@ impl Compiler for OgpImage {
             let font = Font::try_from_bytes(&font_bytes).unwrap();
             let img = image::open(&img_path).unwrap();
             let width = img.width();
-            let max_width = width - 120;
+            let max_width = width - 200;
             let height = img.height();
-            let text_height = 84;
+            let text_height = 120;
 
             // Get title
             let meta = ctx
@@ -92,7 +92,7 @@ impl Compiler for OgpImage {
             let wrapped = font_wrap(&font, scale, tokens, max_width as i32);
             let position = draw_position(&font, width as i32, 10, scale, wrapped.clone());
             let lines = wrapped.len() as u32;
-            let y = height / 2 - text_height / 2 * (lines + 1);
+            let y = height / 2 - text_height / 2 * (lines + 2);
 
             let mut new_img = img.into_rgba8();
             for (line, (x, y_offset)) in wrapped.into_iter().zip(position.into_iter()) {
