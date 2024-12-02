@@ -59,7 +59,7 @@ impl Compiler for OgpImage {
             let width = img.width();
             let max_width = width - 200;
             let height = img.height();
-            let text_height = 120;
+            let text_height = 180;
 
             // Get title
             let meta = ctx
@@ -80,16 +80,45 @@ impl Compiler for OgpImage {
                 .unwrap();
 
             let mut worker = tokenizer.new_worker();
-            worker.reset_sentence(&title);
-            worker.tokenize();
-            let tokens: Vec<_> = worker
-                .token_iter()
-                .map(|v| v.surface().to_owned())
+            let mut tokenize = |s| {
+                worker.reset_sentence(s);
+                worker.tokenize();
+                let spl: Vec<_> = worker
+                    .token_iter()
+                    .map(|v| v.surface().to_owned())
+                    .collect();
+                spl
+            };
+            let tokens = tokenize(title);
+            let splitted = tokens
+                .into_iter()
+                .fold(Vec::new(), |mut acc: Vec<String>, v| {
+                    if let Some(last) = acc.last_mut() {
+                        if last.is_ascii() && v.is_ascii() {
+                            last.push_str(&v);
+                        } else {
+                            acc.push(v);
+                        }
+                        acc
+                    } else {
+                        vec![v]
+                    }
+                });
+            let splitted: Vec<_> = splitted
+                .into_iter()
+                .map(|v| {
+                    v.split(" ")
+                        .zip(std::iter::repeat(" "))
+                        .flat_map(|(c, s)| [s.to_owned(), c.to_owned()])
+                        .skip(1)
+                        .collect::<Vec<_>>()
+                })
+                .flatten()
                 .collect();
 
             // Calculate
             let scale = Scale::uniform(text_height as f32);
-            let wrapped = font_wrap(&font, scale, tokens, max_width as i32);
+            let wrapped = font_wrap(&font, scale, splitted, max_width as i32);
             let position = draw_position(&font, width as i32, 10, scale, wrapped.clone());
             let lines = wrapped.len() as u32;
             let y = height / 2 - text_height / 2 * (lines + 2);
