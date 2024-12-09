@@ -1,0 +1,13 @@
+<ul>
+    {% for tag in tags | sort(attribute="count") | reverse %}
+    <li>
+        <details>
+            <summary>
+                {{ tag.name }} ({{ tag.count }}件)
+            </summary>
+            {% set posts = tag.posts | sort(attribute="date") | reverse %}
+            {% include "post-list.html" %}
+        </details>
+    </li>
+    {% endfor %}
+</ul>

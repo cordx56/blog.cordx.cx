@@ -1,4 +1,5 @@
 mod ogp;
+mod tags;
 
 use ogp::OgpImage;
 use polysite::{
@@ -49,8 +50,9 @@ async fn main() {
             Rule::new(
                 "index",
                 pipe!(
+                    tags::tags_meta,
                     TemplateRenderer::new(template_engine.clone(), "index.html"),
-                    FileWriter::new()
+                    FileWriter::new(),
                 ),
             )
             .set_create(["index.html"]),
@@ -62,6 +64,8 @@ async fn main() {
                 ),
             )
             .set_create(["archive.html"]),
+            Rule::new("tags", tags::Tags::new(template_engine.clone()))
+                .set_create(["tags/index.html"]),
             Rule::new(
                 "ogp_image",
                 pipe!(
