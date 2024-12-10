@@ -119,7 +119,7 @@ impl Compiler for OgpImage {
             // Calculate
             let scale = Scale::uniform(text_height as f32);
             let wrapped = font_wrap(&font, scale, splitted, max_width as i32);
-            let position = draw_position(&font, width as i32, 10, scale, wrapped.clone());
+            let position = draw_position(&font, width as i32, 40, scale, wrapped.clone());
             let lines = wrapped.len() as u32;
             let y = height / 2 - text_height / 2 * (lines + 2);
 
@@ -127,7 +127,7 @@ impl Compiler for OgpImage {
             for (line, (x, y_offset)) in wrapped.into_iter().zip(position.into_iter()) {
                 new_img = draw_text(
                     &new_img,
-                    Rgba([204, 204, 204, 255]),
+                    Rgba([255, 255, 255, 255]),
                     x,
                     y as i32 + y_offset,
                     scale,
