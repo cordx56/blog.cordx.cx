@@ -78,6 +78,14 @@ body.dark {
     height: var(--font-size);
 }
 
+.tags span {
+    margin: 0 0.2em;
+    padding: 0.2em 0.5em;
+    color: #eee;
+    background-color: var(--accent-color);
+    border-radius: 4px;
+}
+
 main {
     max-width: 800px;
     margin: 1em auto;

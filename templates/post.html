@@ -9,6 +9,14 @@
         {% if author %}
         <p class="author">{{ author }}</p>
         {% endif %}
+        {% if tags %}
+        <p class="tags">
+            <a href="/tags/">tags: </a>
+            {% for tag in tags %}
+                <span>#{{tag}}</span>
+            {% endfor %}
+        </p>
+        {% endif %}
         <p>
         <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="{{ title }}" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </p>
