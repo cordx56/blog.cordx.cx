@@ -1,17 +1,17 @@
 body {
     --color: #000;
     --bg-color: #fff;
-    --accent-color: #cc3333;
+    --accent-color: #ee4444;
 
     margin: 0;
-    font-family: sans-serif;
+    font-family: "Zen Kaku Gothic New", sans-serif;
     color: var(--color);
     background-color: var(--bg-color);
     /* transition: color 0.5s, background-color 0.5s; */
 }
 body.dark {
     --color: #ccc;
-    --bg-color: #111;
+    --bg-color: #222224;
 
     color: var(--color);
     background-color: var(--bg-color);
@@ -43,7 +43,6 @@ body.dark {
 }
 .site-header .site-title {
     font-size: var(--font-size);
-    font-weight: lighter;
 }
 .site-header .site-title {
     color: var(--color);
@@ -92,9 +91,6 @@ main {
     padding: 1em;
 }
 
-main article {
-    font-family: serif;
-}
 
 footer {
     text-align: center;
@@ -108,12 +104,26 @@ a {
 }
 h1, h2, h3, h4, h5, h6 {
     border-bottom: 1px solid var(--accent-color);
-    font-family: sans-serif;
-    font-weight: lighter;
+    font-weight: 300;
 }
 img {
     max-width: 100%;
 }
 pre {
     overflow-x: auto;
+}
+
+@font-face {
+    font-family: "Zen Kaku Gothic New";
+    font-weight: 300;
+    src:
+        local("Zen Kaku Gothic New"),
+        url("/css/ZenKakuGothicNew-Light.ttf") format("truetype"),
+}
+@font-face {
+    font-family: "Zen Kaku Gothic New";
+    font-weight: normal;
+    src:
+        local("Zen Kaku Gothic New"),
+        url("/css/ZenKakuGothicNew-Regular.ttf") format("truetype"),
 }
